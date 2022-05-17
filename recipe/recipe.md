@@ -24,7 +24,7 @@ class Diary
   def initialize
   end
 
-  def all
+  def entries
     # Returns a list of instances of DiaryEntries
   end
 
@@ -146,11 +146,11 @@ _Create examples of user interactions and expectations._
 
 # View no entries
 visit "/diary"
-# User sees: You have nothing to do.
+# User sees: You have no diary entries.
 
 # Add an entry
 visit "/diary"
-click link "Add Diary"
+click link "Add Entry"
 enter "A beautiful day" into "Title" field
 enter "I had a very nice day it's true." into "Contents" field
 click button "Post"
@@ -160,11 +160,11 @@ click button "Post"
 
 # Multiple entries
 visit "/diary"
-click link "Add Diary"
+click link "Add Entry"
 enter "A beautiful day" into "Title" field
 enter "I had a very nice day it's true." into "Contents" field
 click button "Post"
-click link "Add Diary"
+click link "Add Entry"
 enter "A bad day" into "Title" field
 enter "I had a very bad day." into "Contents" field
 click button "Post"
