@@ -1,0 +1,30 @@
+<h1>Lost Cat</h1>
+
+<% if cat_list.empty? %>
+  There are no lost cats.
+<% else %>
+  <% cat_list.each_with_index do |lost_cat, index| %>
+    <section>
+      <h2><%= lost_cat.name %></h2>
+      <p><%= lost_cat.about %></p>
+      <p>
+        <a href="/lostcats/<%= index %>/edit">
+          <button>Edit <%= lost_cat %></button>
+        </a>
+      </p>
+
+      <form action="/lostcats/<%= index %>" method="POST">
+        <%#
+          This hidden input is necessary for Sinatrato recognise
+          this as a DELETE request.
+        %>
+        <input type="hidden" name="_method" value="DELETE">
+        <button>Delete <%= lost_cat %></button>
+      </form>
+    </section>
+  <% end %>
+<% end %>
+
+<p>
+  <a href="/lostcats/new">Add Lost Cat.</a>
+</p>

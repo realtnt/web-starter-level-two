@@ -4,7 +4,7 @@ require 'sinatra/base'
 require 'sinatra/reloader'
 
 # You will want to require your data model class here
-require "animal_list"
+require "cat_list"
 
 class WebApplicationServer < Sinatra::Base
   # This line allows us to send HTTP Verbs like `DELETE` using forms
@@ -27,48 +27,22 @@ class WebApplicationServer < Sinatra::Base
 
   # YOUR CODE GOES BELOW THIS LINE
 
-  # ...
-
-  # This is an example of setting up a new instance using the global data store.
-  # def your_data_model
-  #   $global[:your_data_model] ||= YourDataModel.new
-  # end
-
-  # EXAMPLE ROUTES
-
-  get '/animals' do
-    erb :animals_index, locals: { animals: animal_list.list }
+  def cat_list
+    $global[:cat_list] ||= CatList.new
   end
 
-  get '/animals/new' do
-    erb :animals_new
+  get '/lostcats' do
+    erb :lost_cats_index, locals: { cat_list: cat_list.list }
   end
 
-  post '/animals' do
-    animal_list.add(params[:species])
-    redirect '/animals'
+  get '/lostcats/new' do
+    erb :lostcats_new
   end
 
-  delete '/animals/:index' do
-    animal_list.remove(params[:index].to_i)
-    redirect '/animals'
+  post '/lostcats' do
+    cat_list.add(params[:name], params[:about])
+    redirect '/lostcats'
   end
 
-  get '/animals/:index/edit' do
-    animal_index = params[:index].to_i
-    erb :animals_edit, locals: {
-      index: animal_index,
-      animal: animal_list.get(animal_index)
-    }
-  end
 
-  patch '/animals/:index' do
-    animal_index = params[:index].to_i
-    animal_list.update(animal_index, params[:species])
-    redirect '/animals'
-  end
-
-  def animal_list
-    $global[:animal_list] ||= AnimalList.new
-  end
 end
