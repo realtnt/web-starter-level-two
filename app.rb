@@ -44,5 +44,11 @@ class WebApplicationServer < Sinatra::Base
     redirect '/lostcats'
   end
 
+  delete '/lostcats/:id' do
+    cat_list.remove(params[:id].to_i)
+    redirect '/lostcats'
+  end
+
+
 
 end

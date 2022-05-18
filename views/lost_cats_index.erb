@@ -9,7 +9,7 @@
       <p><%= lost_cat.about %></p>
       <p>
         <a href="/lostcats/<%= index %>/edit">
-          <button>Edit <%= lost_cat %></button>
+          <button>Edit <%= lost_cat.name %></button>
         </a>
       </p>
 
@@ -19,7 +19,7 @@
           this as a DELETE request.
         %>
         <input type="hidden" name="_method" value="DELETE">
-        <button>Delete <%= lost_cat %></button>
+        <button>Delete <%= lost_cat.name %></button>
       </form>
     </section>
   <% end %>

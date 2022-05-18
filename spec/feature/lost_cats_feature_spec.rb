@@ -30,23 +30,23 @@ RSpec.describe "Lost Cats Feature", type: :feature do
     expect(page).to have_content "Dog"
   end
 
-  it "deletes animals" do
-    visit "/animals"
-    click_link "Add Animal"
-    fill_in "Species", with: "Frog"
-    click_button "Add Animal"
-    click_link "Add Animal"
-    fill_in "Species", with: "Cat"
-    click_button "Add Animal"
-    click_link "Add Animal"
-    fill_in "Species", with: "Dog"
-    click_button "Add Animal"
+  it "deletes lost cat" do
+    visit "/lostcats"
+    click_link "Add Lost Cat"
+    fill_in "name", with: "Tom"
+    click_button "Add Lost Cat"
+    click_link "Add Lost Cat"
+    fill_in "name", with: "Jerry"
+    click_button "Add Lost Cat"
+    click_link "Add Lost Cat"
+    fill_in "name", with: "eric"
+    click_button "Add Lost Cat"
 
-    click_button "Delete Cat"
+    click_button "Delete Jerry"
 
-    expect(page).to have_content "Frog"
-    expect(page).not_to have_content "Cat"
-    expect(page).to have_content "Dog"
+    expect(page).to have_content "Tom"
+    expect(page).not_to have_content "Jerry"
+    expect(page).to have_content "eric"
   end
 
   it "updates animals" do

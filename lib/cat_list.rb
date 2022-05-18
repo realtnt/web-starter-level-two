@@ -15,6 +15,7 @@ class CatList
   end
 
   def remove(index)
+    p index
     @cats.delete_at(index)
   end
 
