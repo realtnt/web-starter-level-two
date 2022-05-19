@@ -5,34 +5,50 @@ RSpec.describe CatList do
     expect(subject.list).to eq []
   end
 
-  xit "adds cats" do
-    subject.add("cat name", "cat about")
-    lost_cat = double :LostCat
-    expect(subject.list).to eq [lost_cat]
+  it "adds cats" do
+    lost_cat_fake = double :LostCat
+    cat_list = CatList.new(lost_cat_fake)
+    allow(lost_cat_fake).to receive(:new).and_return(lost_cat_fake)
+    cat_list.add("cat name", "cat description", "012345566")
+    expect(cat_list.list).to eq [lost_cat_fake]
   end
 
-  xit "removes examples" do
-    subject.add("cat name 1", "cat about 1")
-    subject.add("cat name 2", "cat about 2")
-    subject.add("cat name 3", "cat about 3")
-    subject.add("dog")
-    subject.add("frog")
-    subject.remove(1)
-    expect(subject.list).to eq ["cat", "frog"]
+  it "removes cat" do
+    lost_cat_fake = double :LostCat
+    cat_list = CatList.new(lost_cat_fake)
+    allow(lost_cat_fake).to receive(:new).and_return(lost_cat_fake)
+    cat_list.add("cat name 1", "cat description", "012345566")
+    cat_list.add("cat name 2", "cat description", "012345566")
+    cat_list.add("cat name 3", "cat description", "012345566")
+    cat_list.remove(1)
+    expect(cat_list.list).to eq [lost_cat_fake, lost_cat_fake]
   end
 
-  xit "updates examples" do
-    subject.add("cat")
-    subject.add("dog")
-    subject.add("frog")
-    subject.update(1, "zebra")
-    expect(subject.list).to eq ["cat", "zebra", "frog"]
+  it "updates cats" do
+    lost_cat_fake = double :LostCat
+    cat_list = CatList.new(lost_cat_fake)
+    allow(lost_cat_fake).to receive(:new).and_return(lost_cat_fake)
+    allow(lost_cat_fake).to receive(:name=)
+    allow(lost_cat_fake).to receive(:description=)
+    allow(lost_cat_fake).to receive(:mobile=)
+    cat_list.add("cat name 1", "cat description", "012345566")
+    cat_list.add("cat name 2", "cat description", "012345566")
+    cat_list.add("cat name 3", "cat description", "012345566")
+    cat_list.update(1, "updated cat", "cat updated", "099999999")
+    expect(cat_list.list).to eq [lost_cat_fake, lost_cat_fake, lost_cat_fake]
+    expect(cat_list.get(1)).to eq(lost_cat_fake)
   end
 
-  xit "gets a single cat" do
-    subject.add("cat")
-    subject.add("dog")
-    subject.add("frog")
-    expect(subject.get(1)).to eq "dog"
+  it "gets a single cat" do
+    lost_cat_fake = double :LostCat
+    cat_list = CatList.new(lost_cat_fake)
+    allow(lost_cat_fake).to receive(:new).and_return(lost_cat_fake)
+    allow(lost_cat_fake).to receive(:name=)
+    allow(lost_cat_fake).to receive(:description=)
+    allow(lost_cat_fake).to receive(:mobile=)
+    cat_list.add("cat name 1", "cat description", "012345566")
+    cat_list.add("cat name 2", "cat description", "012345566")
+    cat_list.add("cat name 3", "cat description", "012345566")
+    expect(cat_list.get(1)).to eq lost_cat_fake
   end
 end

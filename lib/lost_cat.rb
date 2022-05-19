@@ -1,1 +1,1 @@
-LostCat = Struct.new(:name, :about)
+LostCat = Struct.new(:name, :description, :mobile)

@@ -1,8 +1,38 @@
-# {{PROBLEM}} Web Design Recipe (Level Two)
+# Lost Cats Web Design Recipe (Level Two)
 
 ## 1. Describe the Problem
 
 _Put or write the user stories here. Add any clarifying notes you might have._
+
+> As a user
+>
+> So that I can find my cat that I lost
+>
+> I want to post an advert for a lost cat with some description of the cat, and my telephone number so people can contact me
+
+> As a user
+>
+> So that I can help others find their lost cats
+>
+> I want to see all of the lost cat adverts
+
+> As a user
+>
+> So that I can focus on the yet not-found cats
+>
+> I want to delete adverts for cats that have been found
+
+> As a user
+>
+> So that I can update lost cat adverts with potential sightings
+>
+> I want to update adverts
+
+> As a user
+>
+> So that I can protect my cat adverts from weird people
+>
+> I want to give a password with each advert, and only people who give the right password can update or delete that advert
 
 ## 2. Design the Interface
 
@@ -10,7 +40,7 @@ _This is the fun part! Use excalidraw.com or a similar tool to design some
 wireframes (rough sketches of the user interface). Include interactions and
 transitions between pages — those are the most critical part._
 
-![Diary design example](./diary_design.png)
+![Lost Cat Design](./lost_cat.png)
 
 ## 3. Design the Data Model Classes
 
@@ -20,51 +50,42 @@ _Include the initializer and public methods with all parameters and return value
 ```ruby
 # EXAMPLE
 
-class Diary
+class CatList
   def initialize
+    @cats = []
   end
 
-  def entries
-    # Returns a list of instances of DiaryEntries
+  def list
+    # Returns a list of lost cats
   end
 
-  def add(entry) # entry is a DiaryEntry
-    # No return value
-  end
-
-  def get(index) # index is a number
-    # Returns an entry, the entry at the given index
-  def
-
-  def update(index, new_entry) # index is a number, new_entry is a DiaryEntry
-    # Updates the entry at index to be the new_entry
+  def add(lost_cat) # entry is a LostCat
     # No return value
   end
 
   def remove(index) # index is a number
     # Deletes the entry at index
   end
+
+  def update(index, name, description, mobile) # index is a number, name, description & mobile are strings
+    # Updates the entry at index with the new name, description and mobile
+    # No return value
+  end
+
+  def get(index) # index is a number
+    # Returns an entry, the entry at the given index
+  def
 end
 
-class DiaryEntry
-  def initialize(title, contents)
-    # title is a string
-    # contents is a string
-  end
+# DiaryEntry class
 
-  def title
-    # Returns the title
-  end
+DiaryEntry = Struct.new(:title, :description, :mobile)
 
-  def contents
-    # Returns the contents
-  end
-end
 ```
 
 _Check them against these rules:_
 
-> 1. Does they represent a collection or collections of data?
+> 1. Do they represent a collection or collections of data?
 > 2. Does each collection have relevant methods to:
 >    1. List out all items in the resource
 >    2. Create an item (C)
@@ -73,29 +94,6 @@ _Check them against these rules:_
 >    5. Delete an item (D)
 > 3. Is it possible to construct a realistic data model just by using simple
 >    data types? (strings, integers, booleans)
-> 
-> This is OK:
-> ```ruby
-> diary = Diary.new
-> entry = DiaryEntry.new("Title", "Contents")
-> diary.add(entry)
-> # Ultimately only two strings enter the data model.
-> ```
-> 
-> This is not:
-> ```ruby
-> diary = Diary.new
-> entry = DiaryEntry.new("Title", ["Comment One", "Comment Two"])
-> diary.add(entry)
-> # In this case, a string and a list of strings enter the data model.
-> # A list isn't a simple enough data type.
-> ```
-> 
-> The reason for this is that we will be moving onto databases. Databases
-> typically can only store simple data types, so we're keeping that discipline
-> for now!
-> 
-> Some of these rules will be relaxed later but will keep you safe for now.
 
 ## 4. Design the Web API (Requests)
 
@@ -106,28 +104,28 @@ _Map them to the methods or code snippets in your data model._
 # EXAMPLE
 
 # INDEX
-# Request: GET /diary
-diary.entries
+# Request: GET /lostcats
+cat_list.list
 
 # CREATE
-# POST /diary
-# With data: { title: "Hello", contents: "A good diary" }
-entry = DiaryEntry.new(title, contents)
-diary.add(entry)
+# POST /lostcats
+# With data: { title: "Ginger cat", description: "A good ginger kitten", mobile: "01234123457" }
+cat = LostCat.new(title, description, mobile)
+cat_list.add(cat)
 
 # READ
-# GET /diary/:index
-diary.get(index)
+# GET /lostcats/:index
+cat_list.get(index)
 
 # UPDATE
-# PATCH /diary/:index
-# With data: { title: "Hello", contents: "A good diary" }
-entry = DiaryEntry.new(title, contents)
-diary.update(index, entry)
+# PATCH /lostcats/:index
+# With data: { title: "Ginger cat", description: "A good ginger kitten", mobile: "01234123457" }
+cat = LostCat.new(title, description, mobile)
+cat_list.update(index, entry)
 
 # DELETE
-# DELETE /diary/:index
-diary.remove(index)
+# DELETE /lostcats/:index
+cat_list.remove(index)
 ```
 
 > Remember:
@@ -145,34 +143,19 @@ _Create examples of user interactions and expectations._
 # code here, but at the start it's OK if it's just English or made up code.
 
 # View no entries
-visit "/diary"
-# User sees: You have no diary entries.
+visit "/lostcats"
+# User sees: There are no lost cats.
 
 # Add an entry
-visit "/diary"
-click link "Add Entry"
-enter "A beautiful day" into "Title" field
-enter "I had a very nice day it's true." into "Contents" field
+visit "/lostcats"
+click link "Add Lost Cat Entry"
+enter "Ginger cat" into "Title" field
+enter "A good ginger kitten." into "Description" field
+enter "0123456789" into "Mobile" field
 click button "Post"
-# User sees in the diary list:
-# A beautiful day
-# I had a very nice day it's true.
+# User sees the lost cat list. (homepage)
 
-# Multiple entries
-visit "/diary"
-click link "Add Entry"
-enter "A beautiful day" into "Title" field
-enter "I had a very nice day it's true." into "Contents" field
-click button "Post"
-click link "Add Entry"
-enter "A bad day" into "Title" field
-enter "I had a very bad day." into "Contents" field
-click button "Post"
-# User sees in the diary list:
-# A bad day
-# I had a very bad day.
-# A beautiful day
-# I had a very nice day it's true.
+
 ```
 
 ## 6. Test-Drive the Behaviour
@@ -188,13 +171,3 @@ _Follow this cycle:_
    Run `rubocop` as part of this.
 7. Go back to step 1.
 
-
-<!-- BEGIN GENERATED SECTION DO NOT EDIT -->
-
----
-
-**How was this resource?**  
-[😫](https://airtable.com/shrUJ3t7KLMqVRFKR?prefill_Repository=makersacademy/web-starter-level-two&prefill_File=recipe/recipe.md&prefill_Sentiment=😫) [😕](https://airtable.com/shrUJ3t7KLMqVRFKR?prefill_Repository=makersacademy/web-starter-level-two&prefill_File=recipe/recipe.md&prefill_Sentiment=😕) [😐](https://airtable.com/shrUJ3t7KLMqVRFKR?prefill_Repository=makersacademy/web-starter-level-two&prefill_File=recipe/recipe.md&prefill_Sentiment=😐) [🙂](https://airtable.com/shrUJ3t7KLMqVRFKR?prefill_Repository=makersacademy/web-starter-level-two&prefill_File=recipe/recipe.md&prefill_Sentiment=🙂) [😀](https://airtable.com/shrUJ3t7KLMqVRFKR?prefill_Repository=makersacademy/web-starter-level-two&prefill_File=recipe/recipe.md&prefill_Sentiment=😀)  
-Click an emoji to tell us.
-
-<!-- END GENERATED SECTION DO NOT EDIT -->

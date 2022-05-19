@@ -1,26 +1,27 @@
 require 'lost_cat'
 
 class CatList
-  def initialize
+  def initialize(lost_cat = LostCat)
     @cats = []
+    @lost_cat = lost_cat
   end
 
   def list
     return @cats
   end
 
-  def add(name, about)
-    lost_cat = LostCat.new(name, about)
-    @cats << lost_cat
+  def add(name, description, mobile)
+    @cats << @lost_cat.new(name, description, mobile)
   end
 
   def remove(index)
     @cats.delete_at(index)
   end
 
-  def update(index, name, about)
+  def update(index, name, description, mobile)
     @cats[index].name = name
-    @cats[index].about = about
+    @cats[index].description = description
+    @cats[index].mobile = mobile
   end
 
   def get(index)

@@ -1,12 +1,16 @@
 require 'lost_cat'
 
 RSpec.describe LostCat do
-  cat_1 = LostCat.new('mumu', 'lost cat')
+  cat1 = LostCat.new('mumu', 'lost cat', '01234555234')
   it 'should return the name' do
-    expect(cat_1.name).to eq 'mumu'
+    expect(cat1.name).to eq 'mumu'
   end
 
-  it 'should return the about' do
-    expect(cat_1.about).to eq 'lost cat'
+  it 'should return the description' do
+    expect(cat1.description).to eq 'lost cat'
+  end
+
+  it 'should return the mobile' do
+    expect(cat1.mobile).to eq '01234555234'
   end
 end

@@ -1,0 +1,18 @@
+<h1><%= lost_cat.name %></h1>
+<section>
+  <p>
+    <%= lost_cat.description %>
+  </p>
+  <p>
+    Contact owner: <strong><%= lost_cat.mobile %></strong>
+  </p>
+  <form action="/lostcats/<%= index %>" method="POST">
+    <%#
+      This hidden input is necessary for Sinatra to recognise
+      this as a DELETE request.
+    %>
+    <input type="hidden" name="_method" value="DELETE">
+    <button>Delete</button>
+  </form>
+  <a href="/lostcats/<%= index %>/edit"><button>Edit</button></a>
+</section>

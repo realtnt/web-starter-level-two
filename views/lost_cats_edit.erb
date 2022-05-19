@@ -1,6 +1,11 @@
-<h1>Add Lost Cat</h1>
+<h1>Edit Lost Cat</h1>
 
-<form action="/lostcats" method="POST">
+<form action="/lostcats/<%= id %>" method="POST">
+  <%#
+    This hidden input is necessary for Sinatrato recognise
+    this as a PATCH request.
+  %>
+  <input type="hidden" name="_method" value="PATCH">
   <p>
     <label for="name">Name</label>
     <br>
