@@ -1,23 +1,23 @@
-<h1>Edit Lost Cat</h1>
+<h2>Edit Advert</h2>
 
 <form action="/lostcats/<%= id %>" method="POST">
   <%#
-    This hidden input is necessary for Sinatrato recognise
+    This hidden input is necessary for Sinatra to recognise
     this as a PATCH request.
   %>
   <input type="hidden" name="_method" value="PATCH">
   <p>
     <label for="name">Name</label>
     <br>
-    <input type="text" id="name" name="name">
+    <input type="text" id="name" name="name" value="<%= lost_cat.name %>">
     <br>
     <label for="description">Description</label>
     <br>
-    <textarea id="description" name="description"></textarea>
+    <textarea id="description" name="description"><%= lost_cat.description %></textarea>
     <br>
     <label for="mobile">Mobile</label>
     <br>
-    <input type="text" id="mobile" name="mobile">
+    <input type="text" id="mobile" name="mobile" value="<%= lost_cat.mobile %>">
   </p>
   <input type="submit" value="Save">
 </form>

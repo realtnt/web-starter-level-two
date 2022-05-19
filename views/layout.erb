@@ -1,15 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Web Application</title>
+    <title>Lost Cats</title>
+    <base href="/">
     <link rel="stylesheet" href="https://cdn.simplecss.org/simple.css">
+    <link rel="stylesheet" href="styles.css">
   </head>
   <body>
-    <div class="container">
+    <header>
+      <div class="flex-h">
+        <a href="/lostcats" class="site-name">Lost Cats</a>
+        <a class="btn" href="/lostcats/new">Add Advert</a>
+      </div>
+    </header>
+    <main class="container">
       <%= yield %>
-    </div>
-    <footer>
-      <h4><a href="/lostcats">Back to Homepage</a></h4>
-    </footer>
+    </main>
   </body>
 </html>

@@ -67,12 +67,20 @@ class WebApplicationServer < Sinatra::Base
   patch '/lostcats/:id' do
     lost_cat_id = params[:id].to_i
     cat_list.update(
-      lost_cat_id, 
-      params[:name],
-      params[:description],
-      params[:mobile]
+      index: lost_cat_id, 
+      name: params[:name] ||= '',
+      description: params[:description] ||= '',
+      mobile: params[:mobile] ||= '',
+      sighting: params[:sighting] ||= ''
     )
-    redirect '/lostcats'
+    redirect "/lostcats/#{lost_cat_id}"
   end
 
+  get '/lostcats/:id/sighting' do
+    lost_cat_id = params[:id].to_i
+    erb :lost_cats_sighting_edit, locals: {
+      id: lost_cat_id,
+      lost_cat: cat_list.get(lost_cat_id)
+    }
+  end
 end

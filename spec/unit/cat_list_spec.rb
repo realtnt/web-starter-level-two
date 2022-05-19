@@ -34,7 +34,12 @@ RSpec.describe CatList do
     cat_list.add("cat name 1", "cat description", "012345566")
     cat_list.add("cat name 2", "cat description", "012345566")
     cat_list.add("cat name 3", "cat description", "012345566")
-    cat_list.update(1, "updated cat", "cat updated", "099999999")
+    cat_list.update(
+      index: 1, 
+      name: "updated cat", 
+      description: "cat updated", 
+      mobile: "099999999"
+    )
     expect(cat_list.list).to eq [lost_cat_fake, lost_cat_fake, lost_cat_fake]
     expect(cat_list.get(1)).to eq(lost_cat_fake)
   end
