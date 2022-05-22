@@ -51,8 +51,10 @@ class WebApplicationServer < Sinatra::Base
 
   delete '/lostcats/:id' do
     cat_list.remove(params[:id].to_i)
-    redirect 'lostcats'
+    redirect '/lostcats'
   end
+
+
 
   get '/lostcats/:id' do
     erb :lost_cats_details, locals: { 
