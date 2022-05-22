@@ -10,20 +10,25 @@ class CatList
     return @cats
   end
 
-  def add(name, description, mobile)
-    @cats << @lost_cat.new(name, description, mobile, [], 'password')
+  def add(name, description, mobile, password)
+    @cats << @lost_cat.new(
+      name: name, 
+      description: description, 
+      mobile: mobile,
+      password: password
+    )
   end
 
   def remove(index)
     @cats.delete_at(index)
   end
 
-  def update(index:, name: '', description: '', mobile: '', sighting: '', password: '')
-    return false unless password == @cats[index].password
-    @cats[index].name = name unless name.empty?
-    @cats[index].description = description unless description.empty?
-    @cats[index].mobile = mobile unless mobile.empty?
-    @cats[index].sightings << sighting unless sighting.empty?
+  def update(index, name, description, mobile, sighting, password)
+    @cats[index].set_name(name)
+    @cats[index].set_description(description)
+    @cats[index].set_mobile(mobile)
+    @cats[index].add_sighting(sighting)
+    @cats[index].set_password( password)
   end
 
   def get(index)

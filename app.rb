@@ -40,7 +40,12 @@ class WebApplicationServer < Sinatra::Base
   end
 
   post '/lostcats' do
-    cat_list.add(params[:name], params[:description], params[:mobile])
+    cat_list.add(
+      params[:name], 
+      params[:description], 
+      params[:mobile], 
+      params[:password]
+    )
     redirect '/lostcats'
   end
 
@@ -67,11 +72,12 @@ class WebApplicationServer < Sinatra::Base
   patch '/lostcats/:id' do
     lost_cat_id = params[:id].to_i
     cat_list.update(
-      index: lost_cat_id, 
-      name: params[:name] ||= '',
-      description: params[:description] ||= '',
-      mobile: params[:mobile] ||= '',
-      sighting: params[:sighting] ||= ''
+      lost_cat_id, 
+      params[:name] ||= nil,
+      params[:description] ||= nil,
+      params[:mobile] ||= nil,
+      params[:sighting] ||= nil,
+      params[:password] ||= nil
     )
     redirect "/lostcats/#{lost_cat_id}"
   end
@@ -83,4 +89,12 @@ class WebApplicationServer < Sinatra::Base
       lost_cat: cat_list.get(lost_cat_id)
     }
   end
+
+  # get '/lostcats/:id/sentinel' do
+  #   erb: lost_cats_sentinel, locals: { id: params[:id] }
+  # end
+
+  # post '/lostcats/:id/sentinel' do
+
+  # end
 end
