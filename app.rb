@@ -4,7 +4,9 @@ require 'sinatra/base'
 require 'sinatra/reloader'
 
 # You will want to require your data model class here
-require "cat_list"
+require 'cat_ad_list'
+require 'user_list'
+require 'user'
 
 class WebApplicationServer < Sinatra::Base
   # This line allows us to send HTTP Verbs like `DELETE` using forms
@@ -26,77 +28,94 @@ class WebApplicationServer < Sinatra::Base
   # It will sit there waiting for requests. It isn't broken!
 
   # YOUR CODE GOES BELOW THIS LINE
+  enable :sessions
 
-  def cat_list
-    $global[:cat_list] ||= CatList.new
+  def user_list
+    $global[:user_list] ||= UserList.new
   end
 
-  get '/lostcats' do
-    erb :lost_cats_index, locals: { cat_list: cat_list.list }
+  def get_all_ads
+    user_list.list.map {|user| user.cat_ads.list}
   end
 
-  get '/lostcats/new' do
-    erb :lostcats_new
+  get '/' do
+    erb :catboard_index, locals: { cat_list: get_all_ads }
   end
 
-  post '/lostcats' do
-    cat_list.add(
-      params[:name], 
-      params[:description], 
-      params[:mobile], 
-      params[:password]
+  get '/registrations/signup' do
+    erb :'/registrations/signup'
+  end
+
+  post '/registrations' do
+    @user = User.new(
+      name: params["name"], 
+      email: params["email"], 
+      mobile: params["mobile"],
+      password: params["password"]
     )
-    redirect '/lostcats'
+    user_list.add(@user)
+    session[:user_id] = @user.id
+    redirect '/users/profile'
   end
 
-  delete '/lostcats/:id' do
-    cat_list.remove(params[:id].to_i)
-    redirect '/lostcats'
+  get '/users/profile' do
+    @user = user_list.find(session[:user_id])
+    erb :'/users/profile'
   end
 
-
-
-  get '/lostcats/:id' do
-    erb :lost_cats_details, locals: { 
-      lost_cat: cat_list.get(params[:id].to_i), 
-      index: params[:id].to_i 
-    }
-  end
-
-  get '/lostcats/:id/edit' do
-    lost_cat_id = params[:id].to_i
-    erb :lost_cats_edit, locals: {
-      id: lost_cat_id,
-      lost_cat: cat_list.get(lost_cat_id)
-    }
-  end
-
-  patch '/lostcats/:id' do
-    lost_cat_id = params[:id].to_i
-    cat_list.update(
-      lost_cat_id, 
-      params[:name] ||= nil,
-      params[:description] ||= nil,
-      params[:mobile] ||= nil,
-      params[:sighting] ||= nil,
-      params[:password] ||= nil
-    )
-    redirect "/lostcats/#{lost_cat_id}"
-  end
-
-  get '/lostcats/:id/sighting' do
-    lost_cat_id = params[:id].to_i
-    erb :lost_cats_sighting_edit, locals: {
-      id: lost_cat_id,
-      lost_cat: cat_list.get(lost_cat_id)
-    }
-  end
-
-  # get '/lostcats/:id/sentinel' do
-  #   erb: lost_cats_sentinel, locals: { id: params[:id] }
+  # get '/new' do
+  #   erb :lostcats_new
   # end
 
-  # post '/lostcats/:id/sentinel' do
-
+  # post '/' do
+  #   cat_list.add(
+  #     params[:name], 
+  #     params[:description], 
+  #     params[:mobile], 
+  #     params[:password]
+  #   )
+  #   redirect '/'
   # end
+
+  # delete '/:id' do
+  #   cat_list.remove(params[:id].to_i)
+  #   redirect '/'
+  # end
+
+  # get '/:id' do
+  #   erb :lost_cats_details, locals: { 
+  #     lost_cat: cat_list.get(params[:id].to_i), 
+  #     index: params[:id].to_i 
+  #   }
+  # end
+
+  # get '/:id/edit' do
+  #   lost_cat_id = params[:id].to_i
+  #   erb :lost_cats_edit, locals: {
+  #     id: lost_cat_id,
+  #     lost_cat: cat_list.get(lost_cat_id)
+  #   }
+  # end
+
+  # patch '/:id' do
+  #   lost_cat_id = params[:id].to_i
+  #   cat_list.update(
+  #     lost_cat_id, 
+  #     params[:name] ||= nil,
+  #     params[:description] ||= nil,
+  #     params[:mobile] ||= nil,
+  #     params[:sighting] ||= nil,
+  #     params[:password] ||= nil
+  #   )
+  #   redirect "/#{lost_cat_id}"
+  # end
+
+  # get '/:id/sighting' do
+  #   lost_cat_id = params[:id].to_i
+  #   erb :lost_cats_sighting_edit, locals: {
+  #     id: lost_cat_id,
+  #     lost_cat: cat_list.get(lost_cat_id)
+  #   }
+  # end
+
 end
